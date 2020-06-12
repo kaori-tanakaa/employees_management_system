@@ -2,16 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="../layout/app.jsp">
     <c:param name="content">
-        <c:if test="${flush != null}">
-            <div id="flush_success">
-                <c:out value="${flush}"></c:out>
-            </div>
-        </c:if>
+
         <h2>従業員　一覧</h2>
         <table id="employee_list">
             <tbody>
 
-            <form action="" method="post">
+            <form action="EmployeeSearchServlet" method="post" >
             社員番号：
 <input type="text" name="admin_id">
 
@@ -31,15 +27,16 @@
                 <tr>
                     <th>社員番号</th>
                     <th>氏名</th>
+                    <th>所属</th>
                     <th>操作</th>
                 </tr>
                 <c:forEach var="employee" items="${employees}" varStatus="status">
                     <tr class="row${status.count % 2}">
                         <td><c:out value="${employee.code}" /></td>
-                        <td><c:out value="${employee.name}" /></td>
+                        <td><c:out value="${employee.name_kanzi}" /></td>
                         <td>
                             <c:choose>
-                                <c:when test="${employee.delete_flag == 1}">
+                                <c:when test="${employee.delete_flg == 1}">
                                     （削除済み）
                                 </c:when>
                                 <c:otherwise>
@@ -65,7 +62,7 @@
                 </c:choose>
             </c:forEach>
         </div>
-        <p><a href="<c:url value='/employees/mypage' />">戻る</a></p>
+        <p><a href="<c:url value='/' />">戻る</a></p>
 
     </c:param>
 </c:import>

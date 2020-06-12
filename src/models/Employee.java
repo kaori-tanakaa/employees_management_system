@@ -62,11 +62,13 @@ public class Employee {
     @Column(name = "belongs_num", nullable = false)
     private String belongs_num;
 
+
+
     public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -142,6 +144,9 @@ public class Employee {
         this.belongs_num = belongs_num;
     }
 
-    
+
+
+
+
 }
 
