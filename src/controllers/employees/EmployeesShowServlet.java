@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
+import models.Report;
 import utils.DBUtil;
 
 /**
@@ -35,13 +36,15 @@ public class EmployeesShowServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         Employee e = em.find(Employee.class,Long.parseLong(request.getParameter("id")));
-
+        Report r = em.find(Report.class,e.getCode());
 
 
         em.close();
 
 
         request.setAttribute("employee", e);
+
+        request.setAttribute("report", r);
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/show.jsp");
         rd.forward(request, response);

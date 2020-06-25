@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import models.Belongs_num;
 import models.Employee;
 import models.Password;
 import utils.DBUtil;
@@ -29,9 +30,9 @@ public class EmployeeValidator {
             errors.add(name_kana_error);
         }
 
-        String join_at_error = _validateJoin_at(e.getjoin_at());
-        if(!join_at_error.equals("")) {
-            errors.add(join_at_error);
+        String password_error = _validatePassword(p.getPassword(), password_check_flag);
+        if(!password_error.equals("")) {
+            errors.add(password_error);
         }
 
         String birthday_at_error = _validateBirthday_at(e.getbirthday_at());
@@ -39,14 +40,15 @@ public class EmployeeValidator {
             errors.add(birthday_at_error);
         }
 
-        String belongs_num_error = _validateBelongs_num(e.getbelongs_num());
-        if(!belongs_num_error.equals("")) {
-            errors.add(belongs_num_error);
+        String join_at_error = _validateJoin_at(e.getjoin_at());
+        if(!join_at_error.equals("")) {
+            errors.add(join_at_error);
         }
 
-        String password_error = _validatePassword(p.getPassword(), password_check_flag);
-        if(!password_error.equals("")) {
-            errors.add(password_error);
+
+        String belongs_num_error = _validateBelongs(e.getbelongs());
+        if(!belongs_num_error.equals("")) {
+            errors.add(belongs_num_error);
         }
 
 
@@ -81,7 +83,7 @@ public class EmployeeValidator {
         //氏名(漢字)の必須入力チェック
         private static String _validateName_kanzi(String name_kanzi) {
             if(name_kanzi == null || name_kanzi.equals("")) {
-                return "氏名(漢字)を入力してください。";
+                return "氏名を入力してください。";
             }
 
             return "";
@@ -92,22 +94,25 @@ public class EmployeeValidator {
         //氏名(かな)の必須入力チェック
         private static String _validateName_kana(String name_kana) {
             if(name_kana == null || name_kana.equals("")) {
-                return "氏名(かな)を入力してください。";
+                return "ふりがなを入力してください。";
             }
 
             return "";
 
         }
 
-        //入社日の必須入力チェック
-        private static String _validateJoin_at(Date join_at) {
-            if(join_at == null || join_at.equals("")) {
-                return "入社日を入力してください。";
+        // パスワードの必須入力チェック
+        private static String _validatePassword(String password, Boolean password_check_flag) {
+            // パスワードを変更する場合のみ実行
+            if(password_check_flag && (password == null || password.equals(""))) {
+                return "パスワードを入力してください。";
             }
-
             return "";
 
+
         }
+
+
 
         //生年月日の必須入力チェック
         private static String _validateBirthday_at(Date birthday_at) {
@@ -118,10 +123,19 @@ public class EmployeeValidator {
             return "";
 
         }
+        //入社日の必須入力チェック
+        private static String _validateJoin_at(Date join_at) {
+            if(join_at == null || join_at.equals("")) {
+                return "入社日を入力してください。";
+            }
+
+            return "";
+
+        }
 
         //所属部署コードの必須入力チェック
-        private static String _validateBelongs_num(String belongs_num) {
-            if(belongs_num== null || belongs_num.equals("")) {
+        private static String _validateBelongs(Belongs_num belongs) {
+            if(belongs == null || belongs.equals("")) {
                 return "所属部署コードを選択してください。";
             }
 
@@ -129,16 +143,6 @@ public class EmployeeValidator {
 
         }
 
-    // パスワードの必須入力チェック
-    private static String _validatePassword(String password, Boolean password_check_flag) {
-        // パスワードを変更する場合のみ実行
-        if(password_check_flag && (password == null || password.equals(""))) {
-            return "パスワードを入力してください。";
-        }
-        return "";
-
-
-    }
 
 
 }

@@ -2,45 +2,56 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="../layout/app.jsp">
     <c:param name="content">
+  <c:if test="${flush != null}">
+            <div id="flush_success">
+                <c:out value="${flush}">
+                </c:out></div></c:if>
 
         <h2>従業員　一覧</h2>
-        <table id="employee_list">
-            <tbody>
 
-            <form action="EmployeeSearchServlet" method="post" >
-            社員番号：
-<input type="text" name="admin_id">
 
-氏名：
-<input type="text" name="admin_id">
-所属：
-<select name="category_01">
-<option value="default">未選択
-<option value="song_01">大阪第1
-<option value="filetype_01">大阪第2
-<option value="artist_01">大阪第3
 
+            <form  method="get" action="<c:url value='/employees/index' />">
+            <label>社員番号：</label>
+<input type="text" name="code" value="${ code }" />&nbsp;&nbsp;
+
+<label>氏名：</label>
+<input type="text" name="name" value="${ name }" />&nbsp;&nbsp;
+
+<label>所属：</label>
+<select name="belongs">
+<option value="" <c:if test="${ belongs == null }">selected</c:if>>未選択</option>
+<c:forEach var="belongsnum" items="${ belongsnum }" varStatus="status">
+<option value="${ belongsnum.code }" <c:if test="${ belongs == belongsnum.code }">selected</c:if>><c:out value="${ belongsnum.belongs_name }" /></option>
+</c:forEach>
 </select>
+&nbsp;&nbsp;&nbsp;
 
-<input type="submit" name="chk_login" value="検索">
+<button type="submit">検索</button><br /><br />
 </form>
+
+  <table id="employee_list"><tbody>
                 <tr>
                     <th>社員番号</th>
                     <th>氏名</th>
                     <th>所属</th>
                     <th>操作</th>
                 </tr>
-                <c:forEach var="employee" items="${employees}" varStatus="status">
-                    <tr class="row${status.count % 2}">
-                        <td><c:out value="${employee.code}" /></td>
-                        <td><c:out value="${employee.name_kanzi}" /></td>
+                <c:forEach var="employee" items="${ employees }" varStatus="status">
+                    <tr class="row${ status.count % 2 }">
+                        <td><c:out value="${ employee.code }" /></td>
+                        <td><c:out value="${ employee.name_kanzi }" /></td>
+                        <td>
+                       <c:out value="${employee.belongs.belongs_name}" /></td>
+
+
                         <td>
                             <c:choose>
-                                <c:when test="${employee.delete_flg == 1}">
+                                <c:when test="${ employee.delete_flg == 1 }">
                                     （削除済み）
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="<c:url value='/employees/show?id=${employee.id}' />">詳細を表示</a>
+                                    <a href="<c:url value='/employees/show?id=${ employee.id }' />">詳細を表示</a>
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -50,14 +61,14 @@
         </table>
 
         <div id="pagination">
-            （全 ${employees_count} 件）<br />
-            <c:forEach var="i" begin="1" end="${((employees_count - 1) / 15) + 1}" step="1">
+            （全 ${ employees_count } 件）<br />
+            <c:forEach var="i" begin="1" end="${ ((employees_count - 1) / 15) + 1 }" step="1">
                 <c:choose>
-                    <c:when test="${i == page}">
+                    <c:when test="${ i == page }">
                         <c:out value="${i}" />&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value='/employees/index?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
+                        <a href="<c:url value='/employees/index?page=${i}&code=${search_code}&name=${search_name}&belongs=${search_belongs}' />"><c:out value="${i}" /></a>&nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

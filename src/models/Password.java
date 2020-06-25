@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 
     @NamedQuery(
-            name = "checkPassword",
+            name = "checkLoginCodeAndPassword",
             query ="SELECT e FROM Password AS e WHERE e.code = :code AND e.password = :pass"
             )
 })

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,8 +24,27 @@ import javax.persistence.Table;
     query = "SELECT COUNT(e) FROM Employee AS e"
     ),
 @NamedQuery(
+        name = "loginuser",
+        query = "SELECT e FROM Employee AS e WHERE e.code = :code AND e.delete_flg = 0"
+        ),
+
+@NamedQuery(
     name = "checkRegisteredCode",
     query = "SELECT COUNT(e) FROM Employee AS e WHERE e.code = :code"
+    ),
+
+@NamedQuery(
+        name = "searchEmployees",
+        query = "SELECT e FROM Employee AS e WHERE (e.code =:code OR :code IS NULL) "
+               + "AND ((e.name_kanzi LIKE :name OR :name IS NULL) OR (e.name_kana LIKE :name OR :name IS NULL)) "
+                + "AND (e.belongs.code=:belongs_num OR :belongs_num IS NULL) ORDER BY e.id DESC"
+),
+
+    @NamedQuery(
+            name = "searchCount",
+            query = "SELECT COUNT (e) FROM Employee AS e WHERE (e.code =:code OR :code IS NULL) "
+                   + "AND ((e.name_kanzi LIKE :name OR :name IS NULL) OR (e.name_kana LIKE :name OR :name IS NULL)) "
+                    + "AND (e.belongs.code=:belongs_num OR :belongs_num IS NULL) "
     )
 
 })
@@ -32,8 +53,8 @@ import javax.persistence.Table;
 public class Employee {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    private Long id;
 
     @Column(name = "code", nullable = false, unique = true)
     private String code;
@@ -58,17 +79,17 @@ public class Employee {
 
     @Column(name = "birthday_at", nullable = false)
     private Date birthday_at;
+    @ManyToOne
+    @JoinColumn(name = "belongs_num", nullable = false)
+    private Belongs_num belongs;
 
-    @Column(name = "belongs_num", nullable = false)
-    private String belongs_num;
 
 
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -136,12 +157,12 @@ public class Employee {
         this.birthday_at = birthday_at;
     }
 
-    public String getbelongs_num() {
-        return belongs_num;
+    public Belongs_num getbelongs() {
+        return belongs;
     }
 
-    public void setbelongs_num(String belongs_num) {
-        this.belongs_num = belongs_num;
+    public void setbelongs(Belongs_num belongs) {
+        this.belongs = belongs;
     }
 
 

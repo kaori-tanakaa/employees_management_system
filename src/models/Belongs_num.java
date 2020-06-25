@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
     @NamedQuery(
             name = "getAllBelongsNum",
-            query = "SELECT e FROM Employee AS e ORDER BY e.id DESC"
+            query = "SELECT b FROM Belongs_num AS b ORDER BY b.code ASC"
             )})
 @Entity
 public class Belongs_num {
@@ -21,6 +21,7 @@ public class Belongs_num {
     @Id
     @Column(name = "code")
     private String code;
+
 
     @Column(name = "belongs_name", nullable = false)
     private String belongs_name;
@@ -32,6 +33,8 @@ public class Belongs_num {
     public void setCode(String code) {
         this.code = code;
     }
+
+
 
     public String getBelongs_name() {
         return belongs_name;

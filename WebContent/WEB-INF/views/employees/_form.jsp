@@ -10,8 +10,18 @@
     </div>
 </c:if>
 <label for="code">社員番号</label><br />
+
+<c:choose>
+<c:when test="${employee.id==null}">
 <input type="text" name="code" value="${employee.code}" />
-<br /><br />
+</c:when>
+<c:otherwise>
+<input type="text" name="code" value="${employee.code}" disabled />
+<input type="hidden" name="code" value="${employee.code}" />
+</c:otherwise>
+</c:choose>
+
+    <br /><br />
 
 <label for="name_kanzi">氏名</label><br />
 <input type="text" name="name_kanzi" value="${employee.name_kanzi}" />
@@ -27,9 +37,9 @@
 
 <label for="belongs_num">所属</label><br />
 <select name = "belongs_num">
-<option value = "0"<c:if test="${employee.belongs_num == 0}"> selected</c:if>>大阪第1</option>
-<option value = "1"<c:if test="${employee.belongs_num == 1}"> selected</c:if>>大阪第2</option>
-<option value = "2"<c:if test="${employee.belongs_num == 2}"> selected</c:if>>大阪第3</option></select>
+<c:forEach var="belongsnum" items="${belongsnum}" varStatus="status">
+<option value="${belongsnum.code}" <c:if test="${employee.belongs.code == belongsnum.code}">selected</c:if>><c:out value="${belongsnum.belongs_name}" /></option>
+</c:forEach></select>
 <br /><br />
 
 <label for="birthday_at">生年月日</label><br />
@@ -52,5 +62,4 @@
 <br /><br />
 
 <input type="hidden" name="_token" value="${_token}" />
-<button type="submit">登録</button>
 

@@ -23,7 +23,7 @@
                         </tr>
                           <tr>
                             <th>所属</th>
-                            <td><c:out value="${employee.belongs_num}" /></td>
+                            <td><c:out value="${employee.belongs.belongs_name}" /></td>
                         </tr>
                           <tr>
                              <th>生年月日</th>
@@ -51,23 +51,17 @@
                         <tr>
                             <th>登録日時</th>
                             <td>
-                                <fmt:formatDate value="${report.create_at}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                <fmt:formatDate value="${report.create_at}" pattern="yyyy-MM-dd HH:mm:ss" />(<c:out value="${report.create_name}" />)
                             </td>
                         </tr>
-                        <tr>
-                            <th>登録者</th>
-                            <td><c:out value="${report.create_name}" /></td>
-                        </tr>
+
                         <tr>
                             <th>更新日時</th>
                             <td>
-                                <fmt:formatDate value="${report.update_at}" pattern="yyyy-MM-dd HH:mm:ss" />
+                                <fmt:formatDate value="${report.updated_at}" pattern="yyyy-MM-dd HH:mm:ss" />(<c:out value="${report.report_name}" />)
                             </td>
                         </tr>
-                        <tr>
-                            <th>更新者</th>
-                            <td><c:out value="${report.report_name}" /></td>
-                        </tr>
+
                     </tbody>
                 </table>
 
